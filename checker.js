@@ -1,6 +1,6 @@
 const fs = require("fs"); // Importing fs to allow us to use it.
 const readline = require('readline-sync');  // Import readline-sync for synchronous input
-
+const inputFile = "./common_passwords.txt"
 const outputFile = "./checking_password_log.txt";
 
 
@@ -19,9 +19,9 @@ function getCurrentDateTimeFormatted() {
 }
 
 function readInFile(filename){
-
-
-  return "nothing at the moment, change this line";
+  const data = fs.readFileSync(inputFile, "utf-8")
+  const lines = data.split(/\n/)
+  return lines;
 }
 
 const passwordCriteria = {
@@ -66,7 +66,11 @@ function getPasswordFromUser() {
     });
     const currentDateTime = getCurrentDateTimeFormatted();
     fs.appendFileSync(outputFile, `${currentDateTime}\n`, "utf-8");
-
+    if (poorPasswords.includes(password)){
+      console.log("It is in the array")
+    }else{
+      console.log("not in the array")
+    }
     const strength = getPasswordStrength(password);
     console.log(`Password strength: ${strength}`);
 
@@ -80,9 +84,8 @@ function getPasswordFromUser() {
 
 // End of functions
 
-
 // Call a function to read in the data from a file.
-const poorPasswords = readInFile(outputFile); 
+const poorPasswords = readInFile(inputFile); 
 
 // Enter code to read in the 25 most common passwords from the text file here.
 getPasswordFromUser();
